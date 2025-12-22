@@ -14,7 +14,7 @@ class ShopController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Shop::query()->active();
+        $query = Shop::query();
 
         // Search
         if ($request->has('search')) {

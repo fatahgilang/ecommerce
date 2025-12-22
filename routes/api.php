@@ -55,10 +55,8 @@ Route::prefix('v1')->group(function () {
 
     // Categories
     Route::get('/categories', function () {
-        $categories = \App\Models\ProductCategory::select('category_name', 'slug', 'icon')
+        $categories = \App\Models\ProductCategory::select('category_name')
             ->distinct()
-            ->active()
-            ->ordered()
             ->get();
         return response()->json($categories);
     });
@@ -69,14 +67,11 @@ Route::prefix('v1')->group(function () {
         
         $products = \App\Models\Product::where('product_name', 'like', "%{$query}%")
             ->orWhere('product_description', 'like', "%{$query}%")
-            ->active()
-            ->inStock()
             ->with('shop')
             ->limit(10)
             ->get();
 
         $shops = \App\Models\Shop::where('shop_name', 'like', "%{$query}%")
-            ->active()
             ->limit(5)
             ->get();
 
@@ -90,30 +85,20 @@ Route::prefix('v1')->group(function () {
     Route::get('/home', function () {
         return response()->json([
             'featured_products' => \App\Models\Product::with('shop')
-                ->active()
-                ->inStock()
-                ->popular()
                 ->limit(8)
                 ->get(),
             
             'best_sellers' => \App\Models\Product::with('shop')
-                ->active()
-                ->inStock()
-                ->bestSellers()
                 ->limit(8)
                 ->get(),
             
             'new_arrivals' => \App\Models\Product::with('shop')
-                ->active()
-                ->inStock()
                 ->latest()
                 ->limit(8)
                 ->get(),
             
-            'categories' => \App\Models\ProductCategory::select('category_name', 'slug', 'icon')
+            'categories' => \App\Models\ProductCategory::select('category_name')
                 ->distinct()
-                ->active()
-                ->ordered()
                 ->limit(8)
                 ->get(),
         ]);
