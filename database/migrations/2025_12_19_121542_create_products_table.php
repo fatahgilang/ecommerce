@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('unit')->default('pcs');
             $table->integer('stock')->default(0);
             $table->string('image')->nullable();
+            $table->double('weight');
             $table->timestamps();
         });
     }
