@@ -13,7 +13,17 @@ class ListOrders extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            // CreateAction disabled - orders only created via frontend checkout
         ];
+    }
+    
+    public function getHeading(): string
+    {
+        return 'Pesanan';
+    }
+    
+    public function getSubheading(): ?string
+    {
+        return 'Pesanan dibuat otomatis saat customer melakukan checkout di frontend. Admin hanya bisa melihat dan mengupdate status pesanan.';
     }
 }

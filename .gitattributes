@@ -6,6 +6,10 @@
 *.md diff=markdown
 *.php diff=php
 
+# Lock files should not be merged
+composer.lock -diff -merge
+package-lock.json -diff -merge
+
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore

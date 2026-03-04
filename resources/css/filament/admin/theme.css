@@ -1,0 +1,224 @@
+/* Custom Variables */
+:root {
+    --sidebar-width: 16rem;
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+}
+
+/* Custom Sidebar Styling */
+.fi-sidebar {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fi-sidebar-nav-item {
+    transition: all 0.2s ease;
+}
+
+.fi-sidebar-nav-item:hover {
+    background: rgba(59, 130, 246, 0.1);
+    transform: translateX(4px);
+}
+
+.fi-sidebar-nav-item.active {
+    background: rgba(59, 130, 246, 0.2);
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Custom Header */
+.fi-topbar {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Cards */
+.fi-section {
+    border-radius: 12px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.fi-section:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Tables */
+.fi-ta-table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.fi-ta-row:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+/* Custom Buttons */
+.fi-btn-primary {
+    background: var(--primary-color);
+    transition: all 0.2s ease;
+}
+
+.fi-btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+}
+
+/* Custom Forms */
+.fi-fo-field-wrp {
+    margin-bottom: 1.5rem;
+}
+
+.fi-input {
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+.fi-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Custom Stats Cards */
+.fi-wi-stats-overview-stat {
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.fi-wi-stats-overview-stat:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Badges */
+.fi-badge {
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+/* Custom Modal */
+.fi-modal {
+    border-radius: 16px;
+}
+
+.fi-modal-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1.5rem;
+}
+
+.fi-modal-content {
+    padding: 1.5rem;
+}
+
+/* Custom Notifications */
+.fi-no-notification {
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Loading */
+.fi-loading-indicator {
+    color: var(--primary-color);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Dark Mode Support */
+.dark .fi-sidebar {
+    background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+}
+
+.dark .fi-topbar {
+    background: #1e293b;
+    border-bottom-color: #334155;
+}
+
+.dark .fi-section {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.dark .fi-input {
+    background: #0f172a;
+    border-color: #334155;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .fi-sidebar {
+        width: 100%;
+    }
+    
+    .fi-topbar {
+        padding: 1rem;
+    }
+}
+
+/* Animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fi-section {
+    animation: slideIn 0.3s ease;
+}
+
+/* Custom Dashboard Grid */
+.fi-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Custom Chart Styling */
+.fi-wi-chart {
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Print Styles */
+@media print {
+    .fi-sidebar,
+    .fi-topbar,
+    .fi-btn {
+        display: none;
+    }
+    
+    .fi-section {
+        box-shadow: none;
+        border: 1px solid #e5e7eb;
+    }
+}

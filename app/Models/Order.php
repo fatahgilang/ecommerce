@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Order extends Model
 {
     protected $fillable = [
-        'customer_id',
         'product_id',
         'product_quantity',
         'total_price',
@@ -20,11 +19,6 @@ class Order extends Model
     protected $casts = [
         'total_price' => 'decimal:2',
     ];
-
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
 
     public function product(): BelongsTo
     {

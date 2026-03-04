@@ -26,18 +26,32 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Akun Demo')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
+                'danger' => Color::Red,
+                'gray' => Color::Slate,
+                'info' => Color::Sky,
+                'success' => Color::Green,
+                'warning' => Color::Amber,
+            ])
+            ->font('Inter')
+            ->maxContentWidth('full')
+            ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups([
+                'Manajemen Toko',
+                'Manajemen POS',
+                'Laporan',
+                'Pengaturan',
             ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                // Custom dashboard will be auto-discovered
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -52,6 +66,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s');
     }
 }

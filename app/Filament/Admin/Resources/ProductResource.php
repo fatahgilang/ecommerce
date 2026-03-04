@@ -17,7 +17,15 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
+
+    protected static ?string $navigationLabel = 'Produk';
+    
+    protected static ?string $navigationGroup = 'Manajemen Toko';
+
+    protected static ?string $modelLabel = 'Produk';
+    
+    protected static ?string $pluralModelLabel = 'Produk';
 
     public static function form(Form $form): Form
     {
@@ -25,30 +33,43 @@ class ProductResource extends Resource
             ->schema([
                  Forms\Components\Select::make('shop_id')
                     ->relationship('shop', 'shop_name')
+                    ->label('Toko')
                     ->required(),
                 Forms\Components\TextInput::make('product_name')
+                    ->label('Nama Produk')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('product_description')
+                    ->label('Deskripsi Produk')
                     ->rows(3),
                 Forms\Components\TextInput::make('product_price')
+                    ->label('Harga Produk')
                     ->required()
                     ->numeric()
                     ->prefix('Rp'),
                 Forms\Components\TextInput::make('price_per_unit')
+                    ->label('Harga per Satuan')
                     ->required()
                     ->numeric()
                     ->prefix('Rp'),
                 Forms\Components\TextInput::make('unit')
+                    ->label('Satuan')
                     ->required()
                     ->default('pcs'),
                 Forms\Components\TextInput::make('stock')
+                    ->label('Stok')
                     ->required()
                     ->numeric()
                     ->default(0),
                 Forms\Components\FileUpload::make('image')
+                    ->label('Gambar')
                     ->image()
-                    ->directory('products'),
+                    ->disk('public')
+                    ->directory('products')
+                    ->imageEditor()
+                    ->maxSize(2048)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
+                    ->helperText('Upload gambar produk (max 2MB, format: JPG, PNG, WEBP)'),
             ]);
     }
 
@@ -56,18 +77,33 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                 Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Gambar')
+                    ->disk('public')
+                    ->size(60)
+                    ->defaultImageUrl(url('/images/placeholder.svg')),
                 Tables\Columns\TextColumn::make('product_name')
+                    ->label('Nama Produk')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('shop.shop_name')
+                    ->label('Toko')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('product_price')
+                    ->label('Harga')
                     ->money('IDR')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stock')
+                    ->label('Stok')
+                    ->badge()
+                    ->color(fn (int $state): string => match (true) {
+                        $state === 0 => 'danger',
+                        $state < 10 => 'warning',
+                        default => 'success',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -4,8 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\ShopController;
+use App\Http\Controllers\Api\CashRegisterController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,23 +44,86 @@ Route::prefix('v1')->group(function () {
         Route::post('/{order}/cancel', [OrderController::class, 'cancel']);
     });
 
-    // Customers
-    Route::prefix('customers')->group(function () {
-        Route::get('/', [CustomerController::class, 'index']);
-        Route::post('/', [CustomerController::class, 'store']);
-        Route::get('/{customer}', [CustomerController::class, 'show']);
-        Route::put('/{customer}', [CustomerController::class, 'update']);
-        Route::delete('/{customer}', [CustomerController::class, 'destroy']);
-        Route::get('/{customer}/orders', [CustomerController::class, 'orders']);
-        Route::get('/{customer}/reviews', [CustomerController::class, 'reviews']);
-    });
-
     // Categories
     Route::get('/categories', function () {
         $categories = \App\Models\ProductCategory::select('category_name')
             ->distinct()
             ->get();
         return response()->json($categories);
+    });
+
+    // Cash Registers
+    Route::prefix('cash-registers')->group(function () {
+        Route::get('/current', [CashRegisterController::class, 'current']);
+        Route::post('/open', [CashRegisterController::class, 'open']);
+        Route::post('/{cashRegister}/close', [CashRegisterController::class, 'close']);
+        Route::get('/history', [CashRegisterController::class, 'history']);
+        Route::get('/{cashRegister}/summary', [CashRegisterController::class, 'summary']);
+    });
+
+    // Transactions (POS)
+    Route::prefix('transactions')->group(function () {
+        Route::get('/', [TransactionController::class, 'index']);
+        Route::post('/', [TransactionController::class, 'store']);
+        Route::get('/{transaction}', [TransactionController::class, 'show']);
+        Route::post('/{transaction}/cancel', [TransactionController::class, 'cancel']);
+        Route::post('/{transaction}/refund', [TransactionController::class, 'refund']);
+        Route::get('/{transaction}/receipt', [TransactionController::class, 'receipt']);
+    });
+
+    // Reports
+    Route::prefix('reports')->group(function () {
+        Route::get('/sales', [ReportController::class, 'sales']);
+        Route::get('/products', [ReportController::class, 'products']);
+        Route::get('/cashiers', [ReportController::class, 'cashiers']);
+        Route::get('/dashboard', [ReportController::class, 'dashboard']);
+    });
+
+    // Discounts
+    Route::prefix('discounts')->group(function () {
+        Route::get('/', function (Request $request) {
+            $discounts = \App\Models\Discount::active();
+            
+            if ($request->has('code')) {
+                $discounts->where('code', $request->code);
+            }
+            
+            return response()->json($discounts->get());
+        });
+        
+        Route::post('/validate', function (Request $request) {
+            $request->validate([
+                'code' => 'required|string',
+                'amount' => 'required|numeric|min:0',
+            ]);
+            
+            $discount = \App\Models\Discount::active()->byCode($request->code)->first();
+            
+            if (!$discount) {
+                return response()->json([
+                    'valid' => false,
+                    'message' => 'Discount code not found'
+                ], 404);
+            }
+            
+            if (!$discount->isValid($request->amount)) {
+                return response()->json([
+                    'valid' => false,
+                    'message' => 'Discount code is not valid for this amount'
+                ], 422);
+            }
+            
+            return response()->json([
+                'valid' => true,
+                'discount' => [
+                    'id' => $discount->id,
+                    'name' => $discount->name,
+                    'type' => $discount->type,
+                    'value' => $discount->value,
+                    'discount_amount' => $discount->calculateDiscount($request->amount),
+                ]
+            ]);
+        });
     });
 
     // Search

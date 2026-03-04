@@ -1,0 +1,55 @@
+# Railway ignore file - files to exclude from deployment
+
+# Development files
+.env.local
+.env.development
+*.log
+
+# Tests
+tests/
+phpunit.xml
+.phpunit.result.cache
+
+# Documentation (optional, comment out if you want to include)
+# docs/
+# *.md
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Node modules (will be installed during build)
+node_modules/
+
+# Vendor (will be installed during build)
+vendor/
+
+# Build artifacts
+public/hot
+public/storage
+storage/*.key
+
+# Cache
+bootstrap/cache/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+
+# Keep .gitkeep files
+!storage/framework/cache/.gitkeep
+!storage/framework/sessions/.gitkeep
+!storage/framework/views/.gitkeep
+!storage/logs/.gitkeep

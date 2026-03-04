@@ -43,4 +43,9 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function transactionItems(): HasMany
+    {
+        return $this->hasMany(TransactionItem::class);
+    }
 }
