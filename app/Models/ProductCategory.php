@@ -10,13 +10,6 @@ class ProductCategory extends Model
     protected $fillable = [
         'product_id',
         'category_name',
-        'product_description',
-        'unit',
-        'price_per_unit'
-    ];
-
-    protected $casts = [
-        'price_per_unit' => 'decimal:2',
     ];
 
     public function product(): BelongsTo

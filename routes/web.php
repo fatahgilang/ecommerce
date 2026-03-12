@@ -13,6 +13,11 @@ Route::get('/cart', function () {
     return inertia('Cart');
 })->name('cart');
 
+// Printer Setup
+Route::get('/printer-setup', function () {
+    return inertia('PrinterSetup');
+})->name('printer.setup');
+
 // Checkout
 Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 

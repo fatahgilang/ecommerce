@@ -16,7 +16,7 @@ Gunakan checklist ini untuk memastikan semua fitur berfungsi setelah deploy.
 
 ### Products Page (`/products`)
 - [ ] Product listing tampil
-- [ ] Product images load (dummy images)
+- [ ] Product images load (atau placeholder jika belum ada gambar)
 - [ ] Product prices tampil
 - [ ] Product ratings tampil
 - [ ] Pagination berfungsi
@@ -66,7 +66,7 @@ Gunakan checklist ini untuk memastikan semua fitur berfungsi setelah deploy.
 
 ### Products Management
 - [ ] Product list tampil
-- [ ] Product images tampil (dummy images)
+- [ ] Product images tampil (atau placeholder jika belum ada gambar)
 - [ ] Search products berfungsi
 - [ ] Filter berfungsi
 - [ ] Create new product

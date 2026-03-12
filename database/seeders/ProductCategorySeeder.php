@@ -71,12 +71,12 @@ class ProductCategorySeeder extends Seeder
             'Sepeda' => ['Olahraga', 'Outdoor', 'Cycling'],
             
             // Kesehatan & Kecantikan
-            'Vitamin' => ['Kesehatan', 'Suplemen', 'Wellness'],
-            'Masker' => ['Kesehatan', 'Kecantikan', 'Skincare'],
-            'Sabun' => ['Kesehatan', 'Kecantikan', 'Personal Care'],
-            'Shampoo' => ['Kesehatan', 'Kecantikan', 'Hair Care'],
-            'Parfum' => ['Kesehatan', 'Kecantikan', 'Fragrance'],
-            'Lotion' => ['Kesehatan', 'Kecantikan', 'Skincare'],
+            'Vitamin' => ['Kesehatan & Kecantikan', 'Suplemen', 'Wellness'],
+            'Masker' => ['Kesehatan & Kecantikan', 'Skincare', 'Beauty'],
+            'Sabun' => ['Kesehatan & Kecantikan', 'Personal Care', 'Hygiene'],
+            'Shampoo' => ['Kesehatan & Kecantikan', 'Hair Care', 'Personal Care'],
+            'Parfum' => ['Kesehatan & Kecantikan', 'Fragrance', 'Beauty'],
+            'Lotion' => ['Kesehatan & Kecantikan', 'Skincare', 'Beauty'],
             
             // Rumah Tangga
             'Piring' => ['Rumah Tangga', 'Peralatan Makan', 'Kitchen'],
@@ -104,21 +104,9 @@ class ProductCategorySeeder extends Seeder
                 }
             }
             
-            // Jika tidak ada yang cocok, gunakan kategori default berdasarkan toko
+            // Jika tidak ada yang cocok, gunakan kategori default
             if (empty($matchedCategories)) {
-                $shopName = $product->shop->shop_name ?? '';
-                
-                if (stripos($shopName, 'Elektronik') !== false) {
-                    $matchedCategories = ['Elektronik', 'Gadget', 'Technology'];
-                } elseif (stripos($shopName, 'Fashion') !== false) {
-                    $matchedCategories = ['Fashion', 'Pakaian', 'Style'];
-                } elseif (stripos($shopName, 'Makanan') !== false || stripos($shopName, 'Food') !== false) {
-                    $matchedCategories = ['Makanan & Minuman', 'Food', 'Beverage'];
-                } elseif (stripos($shopName, 'Olahraga') !== false || stripos($shopName, 'Sport') !== false) {
-                    $matchedCategories = ['Olahraga', 'Sport', 'Fitness'];
-                } else {
-                    $matchedCategories = ['Umum', 'Produk', 'General'];
-                }
+                $matchedCategories = ['Rumah Tangga', 'Produk', 'General'];
             }
             
             // Buat kategori untuk produk ini
@@ -126,9 +114,6 @@ class ProductCategorySeeder extends Seeder
                 ProductCategory::create([
                     'product_id' => $product->id,
                     'category_name' => $categoryName,
-                    'product_description' => $product->product_description,
-                    'unit' => $product->unit,
-                    'price_per_unit' => $product->price_per_unit,
                 ]);
                 
                 $categoriesCreated++;

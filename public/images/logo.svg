@@ -9,7 +9,7 @@
   <circle cx="18" cy="30" r="1.5" fill="white"/>
   
   <!-- Text -->
-  <text x="30" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">E-Commerce</text>
+  <text x="30" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Aplikasi Toko</text>
   
   <!-- Gradient Definition -->
   <defs>

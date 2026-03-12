@@ -3,6 +3,10 @@
 namespace App\Filament\Admin\Pages;
 
 use Filament\Pages\Dashboard as BaseDashboard;
+use App\Filament\Admin\Widgets\AIInsightsWidget;
+use App\Filament\Admin\Widgets\StockPredictionWidget;
+use App\Filament\Admin\Widgets\StatsOverview;
+use App\Filament\Admin\Widgets\SalesChart;
 
 class Dashboard extends BaseDashboard
 {
@@ -20,6 +24,16 @@ class Dashboard extends BaseDashboard
             'sm' => 1,
             'md' => 2,
             'xl' => 4,
+        ];
+    }
+    
+    public function getWidgets(): array
+    {
+        return [
+            StatsOverview::class,
+            AIInsightsWidget::class,
+            StockPredictionWidget::class,
+            SalesChart::class,
         ];
     }
 }

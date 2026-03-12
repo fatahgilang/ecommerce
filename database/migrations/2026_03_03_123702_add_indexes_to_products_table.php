@@ -15,9 +15,6 @@ return new class extends Migration
             // Index untuk pencarian nama produk
             $table->index('product_name', 'idx_product_name');
             
-            // Index untuk filter berdasarkan shop
-            $table->index('shop_id', 'idx_shop_id');
-            
             // Index untuk filter berdasarkan harga
             $table->index('product_price', 'idx_product_price');
             
@@ -25,7 +22,6 @@ return new class extends Migration
             $table->index('stock', 'idx_stock');
             
             // Composite index untuk pencarian dan filter kombinasi
-            $table->index(['shop_id', 'product_name'], 'idx_shop_product_name');
             $table->index(['product_price', 'stock'], 'idx_price_stock');
             
             // Fulltext index untuk pencarian text yang lebih advanced
@@ -44,12 +40,10 @@ return new class extends Migration
             
             // Drop composite indexes
             $table->dropIndex('idx_price_stock');
-            $table->dropIndex('idx_shop_product_name');
             
             // Drop single column indexes
             $table->dropIndex('idx_stock');
             $table->dropIndex('idx_product_price');
-            $table->dropIndex('idx_shop_id');
             $table->dropIndex('idx_product_name');
         });
     }

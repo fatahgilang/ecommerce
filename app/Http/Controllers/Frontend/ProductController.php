@@ -11,10 +11,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['shop', 'reviews'])
-            ->withCount('reviews')
-            ->withAvg('reviews', 'rating')
-            ->where('stock', '>', 0);
+        $query = Product::where('stock', '>', 0);
 
         // Search
         if ($request->filled('search')) {
@@ -80,11 +77,12 @@ class ProductController extends Controller
                 'unit' => $product->unit,
                 'stock' => $product->stock,
                 'image' => $product->image ? asset('storage/' . $product->image) : null,
-                'shop' => $product->shop ? [
-                    'shop_name' => $product->shop->shop_name,
-                ] : null,
-                'average_rating' => $product->reviews_avg_rating,
-                'reviews_count' => $product->reviews_count,
+                // Discount fields
+                'has_discount' => $product->has_discount,
+                'discount_price' => $product->discount_price,
+                'discount_percentage' => $product->discount_percentage,
+                'discount_start_date' => $product->discount_start_date,
+                'discount_end_date' => $product->discount_end_date,
             ];
         });
 
@@ -103,9 +101,7 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with(['shop', 'categories', 'reviews.customer'])
-            ->withCount('reviews')
-            ->withAvg('reviews', 'rating')
+        $product = Product::with(['categories'])
             ->findOrFail($id);
 
         return Inertia::render('Products/Show', [
@@ -114,34 +110,17 @@ class ProductController extends Controller
                 'product_name' => $product->product_name,
                 'product_description' => $product->product_description,
                 'product_price' => $product->product_price,
-                'price_per_unit' => $product->price_per_unit,
                 'unit' => $product->unit,
                 'stock' => $product->stock,
                 'weight' => $product->weight ?? 0,
                 'image' => $product->image ? asset('storage/' . $product->image) : null,
-                'shop' => $product->shop ? [
-                    'id' => $product->shop->id,
-                    'shop_name' => $product->shop->shop_name,
-                    'description' => $product->shop->description,
-                    'address' => $product->shop->address,
-                    'phone' => $product->shop->phone,
-                    'email' => $product->shop->email,
-                ] : null,
                 'categories' => $product->categories->pluck('category_name'),
-                'average_rating' => $product->reviews_avg_rating,
-                'reviews_count' => $product->reviews_count,
-                'reviews' => $product->reviews->map(function ($review) {
-                    return [
-                        'id' => $review->id,
-                        'rating' => $review->rating,
-                        'review' => $review->review,
-                        'is_verified_purchase' => $review->is_verified_purchase,
-                        'created_at' => $review->created_at->diffForHumans(),
-                        'customer' => [
-                            'name' => $review->customer->name,
-                        ],
-                    ];
-                }),
+                // Discount fields
+                'has_discount' => $product->has_discount,
+                'discount_price' => $product->discount_price,
+                'discount_percentage' => $product->discount_percentage,
+                'discount_start_date' => $product->discount_start_date,
+                'discount_end_date' => $product->discount_end_date,
             ],
         ]);
     }

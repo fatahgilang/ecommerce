@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['shop', 'categories']);
+        $query = Product::with(['categories']);
         
         // Search dengan fulltext index
         if ($request->filled('search')) {
@@ -24,11 +24,6 @@ class ProductController extends Controller
             } else {
                 $query->where('product_name', 'like', $searchTerm . '%');
             }
-        }
-        
-        // Filter by shop
-        if ($request->filled('shop_id')) {
-            $query->where('shop_id', $request->shop_id);
         }
         
         // Filter by price range
@@ -59,31 +54,8 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load(['shop', 'categories', 'reviews.customer']);
+        $product->load(['categories']);
         
         return response()->json($product);
-    }
-
-    public function reviews(Product $product)
-    {
-        $reviews = $product->reviews()
-            ->with('customer')
-            ->latest()
-            ->paginate(10);
-        
-        return response()->json($reviews);
-    }
-
-    public function addReview(Request $request, Product $product)
-    {
-        $validated = $request->validate([
-            'customer_id' => 'required|exists:customers,id',
-            'review' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5'
-        ]);
-
-        $review = $product->reviews()->create($validated);
-        
-        return response()->json($review, 201);
     }
 }

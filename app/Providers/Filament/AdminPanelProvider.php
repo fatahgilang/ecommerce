@@ -6,7 +6,6 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -26,13 +25,15 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('Akun Demo')
+            ->brandName('Toko Makmur')
+            ->brandLogo(asset('images/toko-makmur-logo.svg'))
+            ->brandLogoHeight('4rem') // Tinggi logo yang besar (192px untuk default 16px font)
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Green,
                 'danger' => Color::Red,
                 'gray' => Color::Slate,
                 'info' => Color::Sky,
-                'success' => Color::Green,
+                'success' => Color::Emerald,
                 'warning' => Color::Amber,
             ])
             ->font('Inter')

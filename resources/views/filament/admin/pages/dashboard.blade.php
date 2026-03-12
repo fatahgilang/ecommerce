@@ -71,17 +71,17 @@
                 </div>
             </div>
 
-            <!-- Total Toko -->
+            <!-- Total Users -->
             <div class="fi-section rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
                 <div class="fi-section-content p-6">
                     <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
-                        Total Toko
+                        Total Pengguna
                     </p>
                     <h3 class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                        {{ \App\Models\Shop::count() }}
+                        {{ \App\Models\User::count() }}
                     </h3>
                     <p class="mt-1 text-xs text-blue-600 dark:text-blue-400">
-                        {{ \App\Models\Shop::whereDate('created_at', '>=', now()->subDays(7))->count() }} baru minggu ini
+                        {{ \App\Models\User::whereDate('created_at', '>=', now()->subDays(7))->count() }} baru minggu ini
                     </p>
                 </div>
             </div>

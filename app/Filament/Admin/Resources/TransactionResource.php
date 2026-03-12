@@ -107,6 +107,15 @@ class TransactionResource extends Resource
                     ->label('Nomor Transaksi')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('orders')
+                    ->label('Pesanan Terkait')
+                    ->getStateUsing(function (Transaction $record): string {
+                        $orderIds = $record->orders->pluck('id')->toArray();
+                        return $orderIds ? '#' . implode(', #', $orderIds) : '-';
+                    })
+                    ->badge()
+                    ->color('info')
+                    ->placeholder('-'),
                 Tables\Columns\TextColumn::make('customer.name')
                     ->label('Pelanggan')
                     ->searchable()
@@ -198,9 +207,14 @@ class TransactionResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('transaction_number')
                             ->label('Nomor Transaksi'),
-                        Infolists\Components\TextEntry::make('customer.name')
-                            ->label('Pelanggan')
-                            ->placeholder('Pelanggan Umum'),
+                        Infolists\Components\TextEntry::make('orders')
+                            ->label('Pesanan Terkait')
+                            ->getStateUsing(function (Transaction $record): string {
+                                $orderIds = $record->orders->pluck('id')->toArray();
+                                return $orderIds ? '#' . implode(', #', $orderIds) : 'Tidak ada pesanan terkait';
+                            })
+                            ->badge()
+                            ->color('info'),
                         Infolists\Components\TextEntry::make('user.name')
                             ->label('Petugas Kasir'),
                         Infolists\Components\TextEntry::make('cashRegister.register_name')

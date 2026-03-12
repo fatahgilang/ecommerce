@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Discount extends Model
 {
@@ -86,5 +87,10 @@ class Discount extends Model
     public function scopeByCode($query, string $code)
     {
         return $query->where('code', $code);
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_discounts');
     }
 }

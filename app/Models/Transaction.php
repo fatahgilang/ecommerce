@@ -63,6 +63,11 @@ class Transaction extends Model
         return $this->hasMany(PaymentSplit::class);
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public static function generateTransactionNumber(): string
     {
         $date = now()->format('Ymd');

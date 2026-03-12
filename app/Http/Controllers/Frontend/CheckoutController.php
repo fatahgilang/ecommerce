@@ -16,6 +16,7 @@ class CheckoutController extends Controller
         
         $validated = $request->validate([
             'payment_method' => 'required|string',
+            'discount_code' => 'nullable|string',
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -49,22 +50,8 @@ class CheckoutController extends Controller
                 $itemTotal = $item['price'] * $item['quantity'];
                 $subtotal += $itemTotal;
 
-                // Create order
-                $order = Order::create([
-                    'product_id' => $product->id,
-                    'product_quantity' => $item['quantity'],
-                    'total_price' => $itemTotal,
-                    'payment_method' => $validated['payment_method'],
-                    'status' => 'pending',
-                ]);
-
-                \Log::info('Order created', ['order_id' => $order->id]);
-
-                // Update product stock
-                $product->decrement('stock', $item['quantity']);
-
                 $orders[] = [
-                    'order_id' => $order->id,
+                    'product_id' => $product->id,
                     'product_name' => $product->product_name,
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
@@ -72,11 +59,63 @@ class CheckoutController extends Controller
                 ];
             }
 
+            // Handle discount code
+            $discount = null;
+            $discountAmount = 0;
+            
+            if (!empty($validated['discount_code'])) {
+                $discount = \App\Models\Discount::active()
+                    ->byCode($validated['discount_code'])
+                    ->first();
+                
+                if ($discount && $discount->isValid($subtotal)) {
+                    $discountAmount = $discount->calculateDiscount($subtotal);
+                    \Log::info('Discount applied', [
+                        'code' => $validated['discount_code'],
+                        'discount_amount' => $discountAmount
+                    ]);
+                } else {
+                    throw new \Exception('Kode diskon tidak valid atau tidak memenuhi syarat minimum pembelian');
+                }
+            }
+
+            $finalTotal = $subtotal - $discountAmount;
+
+            // Create orders
+            foreach ($orders as $index => $orderData) {
+                $product = Product::findOrFail($orderData['product_id']);
+                
+                // Create order
+                $order = Order::create([
+                    'product_id' => $product->id,
+                    'product_quantity' => $orderData['quantity'],
+                    'total_price' => $orderData['total'],
+                    'payment_method' => $validated['payment_method'],
+                    'status' => 'pending',
+                    'discount_code' => $validated['discount_code'] ?? null,
+                    'discount_amount' => $index === 0 ? $discountAmount : 0, // Apply discount to first order only
+                ]);
+
+                \Log::info('Order created', ['order_id' => $order->id]);
+
+                // Update product stock
+                $product->decrement('stock', $orderData['quantity']);
+
+                $orders[$index]['order_id'] = $order->id;
+            }
+
+            // Mark discount as used if applied
+            if ($discount && $discountAmount > 0) {
+                $discount->use();
+            }
+
             DB::commit();
             
             \Log::info('Checkout completed successfully', [
                 'total_orders' => count($orders),
-                'subtotal' => $subtotal
+                'subtotal' => $subtotal,
+                'discount_amount' => $discountAmount,
+                'final_total' => $finalTotal
             ]);
 
             return response()->json([
@@ -85,8 +124,10 @@ class CheckoutController extends Controller
                 'data' => [
                     'orders' => $orders,
                     'subtotal' => $subtotal,
-                    'total' => $subtotal,
+                    'discount_amount' => $discountAmount,
+                    'total' => $finalTotal,
                     'payment_method' => $validated['payment_method'],
+                    'discount_code' => $validated['discount_code'] ?? null,
                 ]
             ], 201);
 

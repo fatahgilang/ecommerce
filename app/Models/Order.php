@@ -13,11 +13,18 @@ class Order extends Model
         'product_quantity',
         'total_price',
         'payment_method',
-        'status'
+        'status',
+        'transaction_id',
+        'processed_by',
+        'processed_at',
+        'discount_code',
+        'discount_amount'
     ];
 
     protected $casts = [
         'total_price' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'processed_at' => 'datetime',
     ];
 
     public function product(): BelongsTo
@@ -25,8 +32,15 @@ class Order extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function shipment(): HasOne
+
+
+    public function transaction(): BelongsTo
     {
-        return $this->hasOne(Shipment::class);
+        return $this->belongsTo(Transaction::class);
+    }
+
+    public function processedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'processed_by');
     }
 }

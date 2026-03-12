@@ -1,0 +1,49 @@
+<svg width="2400" height="640" viewBox="0 0 2400 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EF4444;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded rectangle -->
+  <rect x="80" y="120" width="400" height="400" rx="80" fill="url(#logoGradient)"/>
+
+  <!-- Store icon (scaled 10x from original) -->
+  <g transform="translate(160, 240) scale(10)">
+    <!-- Building -->
+    <rect x="0" y="8" width="20" height="12" fill="white" opacity="0.9"/>
+    <!-- Roof -->
+    <polygon points="10,0 22,8 -2,8" fill="white" opacity="0.95"/>
+    <!-- Door -->
+    <rect x="7" y="12" width="6" height="8" fill="#059669"/>
+    <!-- Window -->
+    <rect x="15" y="10" width="4" height="4" fill="#059669"/>
+    <!-- Sign -->
+    <rect x="6" y="4" width="8" height="3" fill="white" opacity="0.8"/>
+  </g>
+
+  <!-- Text: TOKO -->
+  <text x="600" y="340" font-family="Arial, sans-serif" font-size="208" font-weight="bold" fill="url(#textGradient)">TOKO</text>
+
+  <!-- Text: MAKMUR -->
+  <text x="600" y="500" font-family="Arial, sans-serif" font-size="160" fill="#6B7280">MAKMUR</text>
+
+  <!-- Decorative elements -->
+  <circle cx="1680" cy="200" r="32" fill="#10B981" opacity="0.6"/>
+  <circle cx="1800" cy="256" r="24" fill="#3B82F6" opacity="0.6"/>
+  <circle cx="1744" cy="336" r="28" fill="#10B981" opacity="0.4"/>
+
+  <!-- Large star icon (scaled 6x) -->
+  <g transform="translate(1920, 176) scale(6)">
+    <polygon points="0,-4 1.2,-1.2 4,-0.8 1.2,1.2 0,4 -1.2,1.2 -4,-0.8 -1.2,-1.2" fill="url(#accentGradient)"/>
+  </g>
+</svg>

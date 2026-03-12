@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }} - E-Commerce</title>
+    <title>Aplikasi Toko</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -85,9 +85,9 @@
 </head>
 <body>
     <div class="container">
-        <div class="logo">🛒 E-Commerce</div>
-        <div class="subtitle">Sistem E-Commerce Laravel dengan Filament Admin</div>
-        
+        <div class="logo">🛒 Aplikasi Toko</div>
+        <div class="subtitle">Sistem Manajemen Toko</div>
+
         <div class="status">
             ✅ Aplikasi berhasil berjalan!<br>
             📊 Database: Terhubung<br>

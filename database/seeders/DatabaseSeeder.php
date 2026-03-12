@@ -16,28 +16,26 @@ class DatabaseSeeder extends Seeder
         // Seed in correct order due to foreign key constraints
         $this->call([
             UserSeeder::class,           // Users (Admin & Kasir)
-            ShopSeeder::class,           // Shops/Stores
-            ProductSeeder::class,        // Products (depends on Shops)
+            ProductSeeder::class,        // Products
             ProductCategorySeeder::class, // Product Categories (depends on Products)
+            NavigationCategorySeeder::class, // Navigation Categories (for frontend)
             DiscountSeeder::class,       // Discounts/Promos
             CashRegisterSeeder::class,   // Cash Registers (depends on Users)
             TransactionSeeder::class,    // POS Transactions (depends on CashRegister, Product, User)
             OrderSeeder::class,          // Online Orders (depends on Product)
-            ReviewSeeder::class,         // Product Reviews (depends on Product)
         ]);
         
         $this->command->info('🎉 Database seeding completed successfully!');
         $this->command->info('');
         $this->command->info('📊 Summary:');
         $this->command->info('- Users: Admin, Manager, and 6 Cashiers');
-        $this->command->info('- Shops: 5 different types of stores');
-        $this->command->info('- Products: 40+ products across all shops');
+        $this->command->info('- Products: 39 products with discount support');
         $this->command->info('- Product Categories: Multiple categories per product');
+        $this->command->info('- Navigation Categories: 5 main categories for frontend');
         $this->command->info('- Discounts: 14 various discount codes and promos');
         $this->command->info('- Cash Registers: 8 register sessions (2 active, 6 closed)');
         $this->command->info('- Transactions: Multiple POS transactions per register');
-        $this->command->info('- Orders: 30 days of online orders');
-        $this->command->info('- Reviews: Product reviews');
+        $this->command->info('- Orders: 30 days of store orders (no shipping/reviews)');
         $this->command->info('');
         $this->command->info('🔐 Login Credentials:');
         $this->command->info('Admin: admin@tokomakmur.com / password123');
